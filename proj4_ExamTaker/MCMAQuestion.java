@@ -1,0 +1,110 @@
+// Name: Jonathan Munoz
+// ACCC account name: jmunoz
+
+
+import java.util.ArrayList;    // for arraylists
+import java.io.PrintWriter;  // for PrintWriter
+import java.util.Scanner;   // for reading input from keyboard
+
+
+public class MCMAQuestion extends MCQuestion{
+  protected ArrayList<MCAnswer> studentAnswerList; // the list of student MCAnswers for this Question
+  private double baseCredit;                                               // how much credit is earned by selecting nothing at all
+  
+  
+  // MCMAQuestion constructor
+  public MCMAQuestion( String txt, double maxVal, double baseCred ){
+    super( txt, maxVal );
+    baseCredit = baseCred;
+    studentAnswerList = new ArrayList<MCAnswer>(1);
+  }
+  
+  
+  // MCMAQuestion constructor, but with scanner
+  public MCMAQuestion( Scanner scan ){
+    super( scan );
+    answers = new ArrayList<MCAnswer>(5);
+    studentAnswerList = new ArrayList<MCAnswer>(1);
+    
+    // read in the base credit and # of answers for this MCMA question
+    baseCredit = scan.nextDouble();
+    scan.nextLine();
+    int numAnswers = scan.nextInt();
+    scan.nextLine();
+    
+    // then read in all the answers for this MCMA question
+    for( int i = 0; i < numAnswers; i++ ){
+      answers.add( new MCMAAnswer( scan ) );
+    }
+  }
+  
+  
+  // this is really just here because MCMAQuestion inherits Question so this method (with no parameters) needs to exist
+  public Answer getNewAnswer(){
+    return new MCMAAnswer( text, 0.0 );
+  }
+  
+  
+  // creates and returns a MCMAAnswer with the given text and credit if chosen
+  public Answer getNewAnswer( String txt, double creditIfChosen ){
+    return new MCMAAnswer( txt, creditIfChosen );
+  }
+  
+  
+  // prompts the student to enter an answer and then stores that answer
+  public void getAnswerFromStudent(){
+    print();
+    Scanner scan = ScannerFactory.getKeyboardScanner();
+    String studentInput = "NO INPUT";
+    studentAnswerList.clear();
+    
+    System.out.print( "Please enter your answer: " );
+    if( scan.hasNextLine() ){
+      studentInput = scan.nextLine();  // read in the next line from the keyboard
+    }
+    System.out.print("\n");
+    
+    MCMAAnswer studentAns = new MCMAAnswer( studentInput, 0.0 ); // how many points should the student's answer have if selected? Does this make sense to ask??
+    studentAnswerList.add( studentAns );
+  }
+  
+  
+  // calls super.getValue() for all student answers and sums them all up
+  // returns this sum + the base value (points earned if no answers are chosen)
+  public double getValue(){
+    double total = baseCredit;
+    
+    for( MCAnswer ans : studentAnswerList )
+      total += super.getValue( ans );
+    
+    return total;
+  }
+  
+  
+  // saves this question to the output file
+  public void save( PrintWriter printy ){
+    printy.println( maxValue );
+    printy.println( text );
+    printy.println( baseCredit );
+    printy.println( answers.size() );
+    
+    for( Answer ans : answers ){
+      ans.save( printy );
+    }
+  }
+  
+  
+  // saves the student's answers to the output file
+  public void saveStudentAnswers( PrintWriter printy ){
+    printy.println( studentAnswerList.size() );
+    for( MCAnswer ans : studentAnswerList ){
+      printy.println( ans.text );
+    }
+  }
+  
+  
+  // reads in a student answer from a file
+  public void restoreStudentAnswers( Scanner scan ){
+    studentAnswer = new MCMAAnswer( scan.nextLine(), 0.0 );
+  }
+}

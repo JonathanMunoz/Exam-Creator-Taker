@@ -1,0 +1,47 @@
+// Name: Jonathan Munoz
+// ACCC account name: jmunoz
+
+
+import java.util.Scanner;    // for Scanner
+import java.io.PrintWriter;  // for PrintWriter
+
+
+public abstract class MCAnswer extends Answer{
+  protected String text;
+  protected double creditIfSelected;
+  
+  
+  // MCAnswer constructor
+  protected MCAnswer( String txt, double creditIfChosen ){
+    text = txt;
+    creditIfSelected = creditIfChosen;
+  }
+  
+  
+   // MCAnswer constructor, but with scanner
+  public MCAnswer( Scanner scan ){
+    creditIfSelected = scan.nextDouble();
+    text = scan.nextLine();
+  }
+  
+  
+  // prints out this answer
+  public void print(){
+    System.out.println( text );
+  }
+  
+  
+  // returns the credit earned for this question (1 point if correct, 0 otherwise unless there's partial credit)
+  public double getCredit( Answer rightAnswer ){
+    if( (((MCAnswer)rightAnswer).text).equalsIgnoreCase(this.text) )
+      return creditIfSelected;
+    return 0.0;
+  }
+  
+  
+  // prints this answer to the output file
+  public void save( PrintWriter printy ){
+    printy.print( creditIfSelected );
+    printy.println( " " + text );
+  }
+}

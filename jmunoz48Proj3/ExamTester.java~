@@ -1,0 +1,49 @@
+// Name: Jonathan Munoz
+// ACCC account name: jmunoz
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.io.PrintWriter;
+
+
+public class ExamTester{
+  public static void main( String[] args ) throws FileNotFoundException{
+    System.out.println( "Name: Jonathan Munoz\nACCC account name: jmunoz\nnetID: jmunoz48" );
+    System.out.println( "--------------------------------------------------------" );
+    
+    /*String currentDirectory = System.getProperty( "user.dir" );
+    currentDirectory = currentDirectory.replace( "\\", "\\\\" );*/
+    
+    File sampleExam = new File( "sampleExam.txt" );
+    File reorderedExam = new File( "test.txt" );
+    File sampleAnswers = new File( "sampleAnswers.txt" );
+    PrintWriter printOutput = new PrintWriter( reorderedExam );
+    PrintWriter printAnswers = new PrintWriter( sampleAnswers );
+    Scanner scan = new Scanner( sampleExam );
+    
+    Exam testTest = new Exam( scan );
+    
+    testTest.reorderMCAnswers(-1);
+    testTest.reorderQuestions(); 
+    
+    testTest.save( printOutput );
+    testTest.print();
+    testTest.getAnswerFromStudent(-1);
+    testTest.reportQuestionValues();
+    
+    testTest.saveStudentAnswers( printAnswers );
+    
+    printOutput.close();
+    printAnswers.close();
+    scan.close();
+    
+    scan = new Scanner( reorderedExam );
+    testTest = new Exam( scan );
+    testTest.print();
+    testTest.reportQuestionValues();
+    
+    scan.close();   
+  }
+}

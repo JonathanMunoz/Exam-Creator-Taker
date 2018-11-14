@@ -1,0 +1,50 @@
+// Name: Jonathan Munoz
+// ACCC account name: jmunoz
+
+
+public class ExamTester{
+  public static void main( String[] args ){
+    System.out.println( "Name: Jonathan Munoz\nACCC account name: jmunoz\nnetID: jmunoz48" );
+    System.out.println( "--------------------------------------------------------" );
+    
+    Exam sampleExam = new Exam( "Sample Exam" );
+    
+    MCSAQuestion mscaQuestion1 = new MCSAQuestion( "Sample MCSA Question 1", 1.0 );
+    MCAnswer rightAnswer1 = (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 1", 1.0 ));
+    mscaQuestion1.addAnswer( rightAnswer1 );
+    mscaQuestion1.addAnswer( (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 2", 0.0 )) );
+    mscaQuestion1.addAnswer( (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 3", 0.0 )) );
+    mscaQuestion1.addAnswer( (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 4", 0.0 )) );
+    mscaQuestion1.addAnswer( (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 5", 0.0 )) );
+    mscaQuestion1.setRightAnswer( rightAnswer1 );
+    sampleExam.addQuestion( (Question)mscaQuestion1 );
+    
+    MCSAQuestion mscaQuestion2 = new MCSAQuestion( "Sample MCSA Question 2", 2.0 );
+    mscaQuestion2.addAnswer( (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 1", 0.0 )) );
+    mscaQuestion2.addAnswer( (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 2", 0.0 )) );
+    mscaQuestion2.addAnswer( (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 3", 0.0 )) );
+    MCAnswer rightAnswer2 = (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 4", 2.0 ));
+    mscaQuestion2.addAnswer( rightAnswer2 );
+    mscaQuestion2.addAnswer( (MCAnswer)(mscaQuestion1.getNewAnswer( "Sample Answer 5", 0.0 )) );
+    mscaQuestion2.setRightAnswer( rightAnswer2 );
+    sampleExam.addQuestion( mscaQuestion2 );
+    
+    SAQuestion saQuestion1 = new SAQuestion( "Sample SA Question", 3.0 );
+    saQuestion1.setRightAnswer( saQuestion1.getNewAnswer("Correct Answer") );
+    sampleExam.addQuestion( saQuestion1 );
+    
+    SAQuestion saQuestion2 = new SAQuestion( "Other sample SA Question", 4.0 );
+    saQuestion2.setRightAnswer( saQuestion2.getNewAnswer("Correct Answer") );
+    sampleExam.addQuestion( saQuestion2 );
+    
+    sampleExam.print();
+    sampleExam.reorderQuestions();
+    sampleExam.reorderMCAnswers( -1 );
+    System.out.println("--------------------------------------------------------");
+    sampleExam.print();
+    
+    sampleExam.getAnswerFromStudent( -1 );
+    System.out.println( "Your total Score: " + sampleExam.getValue() );
+    sampleExam.reportQuestionValues();
+  }
+}
